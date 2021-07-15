@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pgconncheck
+spec:
+  template:
+    spec:
+      containers:
+        - name: pgconncheck
+          image: wcrbrm/pgconn-check:latest
+          env:
+            - name: POSTGRES_CONNECTION
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: conn
+      restartPolicy: Never
+  backoffLimit: 1
